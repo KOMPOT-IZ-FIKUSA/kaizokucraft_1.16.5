@@ -1,0 +1,42 @@
+{
+  "parent": "forge:item/default",
+  "loader": "forge:obj",
+  "model": "kaizokucraft:models/projectile/fire_bullet.obj",
+  "textures": {
+    "particle": "block/bedrock"
+  },
+  "transform": {
+    "thirdperson_righthand": {
+      "translation": [-0.8, -0.7, -0.7],
+      "scale": 0.15,
+      "rotation": [0, 0, 0]
+    },
+    "thirdperson_lefthand": {
+      "translation": [-0.9, -0.7, -0.7],
+      "scale": 0.15,
+      "rotation": [0, 0, 0]
+    },
+    "firstperson_righthand": {
+      "translation": [-0.7, -0.4, -0.5],
+      "scale": 0.25,
+      "rotation": [0, 0, 0]
+    },
+    "firstperson_lefthand": {
+      "translation": [-0.8, -0.4, -0.5],
+      "scale": 0.25,
+      "rotation": [0, 0, 0]
+    },
+    "gui": {
+      "translation": [-0.5, -0.5, 0],
+      "rotation": [30, 30, 30],
+      "scale": 0.4
+    },
+    "ground": {
+      "translation": [-0.7, -0.7, -0.7],
+      "scale": 0.2,
+      "rotation": [0, 0, 0]
+    }
+  },
+  "gui_light": "front"
+
+}

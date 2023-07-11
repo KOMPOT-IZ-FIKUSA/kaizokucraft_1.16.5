@@ -1,0 +1,42 @@
+{
+  "parent": "forge:item/default",
+  "loader": "forge:obj",
+  "model": "kaizokucraft:models/item/iron_knife.obj",
+  "textures": {
+    "particle": "block/bedrock"
+  },
+  "transform": {
+    "thirdperson_righthand": {
+      "rotation": [15, 270, -20],
+      "translation": [-1.17, -1.3, -1.1],
+      "scale": 0.12
+    },
+    "thirdperson_lefthand": {
+      "rotation": [15, 270, -40],
+      "translation": [-1.17, -1.5, -1.0],
+      "scale": 0.12
+    },
+    "firstperson_righthand": {
+      "rotation": [30, 270, -40],
+      "translation": [-1.17, -1.1, -1.2],
+      "scale": 0.12
+    },
+    "firstperson_lefthand": {
+      "rotation": [30, 270, -40],
+      "translation": [-1.17, -1.4, -1.0],
+      "scale": 0.12
+    },
+    "gui": {
+      "translation": [-6.25, -2.45, 0],
+      "rotation": [0, 0, 0],
+      "scale": 0.4
+    },
+    "ground": {
+      "translation": [-2.28, -1.3, -0.8],
+      "scale": 0.1,
+      "rotation": [0, 0, 0]
+    }
+  },
+  "gui_light": "front"
+
+}

@@ -1,0 +1,20 @@
+{
+  "required": true,
+  "minVersion": "0.8",
+  "compatibilityLevel": "JAVA_8",
+  "package": "com.deadfikus.kaizokucraft.core.mixin",
+  "refmap": "mixins.kaizokucraft.refmap.json",
+  "mixins": [
+    "BipedModelMixin",
+    "DamageSourceMixin",
+    "InventoryMixin",
+    "MinecraftMixin",
+    "ProjectileMixin",
+    "AbstractFireballEntityMixin"
+  ],
+  "client": [
+    "AbstractGuiMixin",
+    "BlockModelMixin"
+  ],
+  "server": []
+}
