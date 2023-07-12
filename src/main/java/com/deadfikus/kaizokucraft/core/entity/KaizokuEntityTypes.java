@@ -35,7 +35,6 @@ public class KaizokuEntityTypes {
             .register("bullet",
                     () -> EntityType.Builder.of(BulletEntity::new, EntityClassification.MISC)
                             .sized(0.2f, 0.2f)
-                            //.setCustomClientFactory(((spawnEntity, world) -> BulletEntity.init(world)))
                             .build(new ResourceLocation(ModMain.MODID, "bullet").toString()));
 
 

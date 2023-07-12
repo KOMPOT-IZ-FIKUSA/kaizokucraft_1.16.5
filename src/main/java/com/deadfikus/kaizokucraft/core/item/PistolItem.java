@@ -76,13 +76,12 @@ public class PistolItem extends TieredItem {
                         }
                     }
                     BulletItemBase item = (BulletItemBase) stackInSlot.getItem();
-                    System.out.println(item.isFire);
-                    Vector3d bulletMotion = playerIn.getLookAngle().scale(0.01);
+                    Vector3d bulletMotion = playerIn.getLookAngle().scale(4);
                     BulletEntity bullet = BulletEntity.init(
                             worldIn,
                             item.isKairoseki,
                             item.isFire,
-                            1 + punchLvl,
+                            punchLvl,
                             playerIn,
                             playerIn.getX(), playerIn.getEyeY() - 0.1d, playerIn.getZ(),
                             bulletMotion.x, bulletMotion.y, bulletMotion.z
