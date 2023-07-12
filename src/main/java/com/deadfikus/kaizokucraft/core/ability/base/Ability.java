@@ -7,11 +7,12 @@ import net.minecraft.entity.LivingEntity;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.util.INBTSerializable;
+import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 
 public abstract class Ability implements INBTSerializable<CompoundNBT> {
     private AbilityEnum descriptionData;
-    private AbilityPhase currentPhase;
-    private AbilityPhase previousPhase;
+    protected AbilityPhase currentPhase;
+    protected AbilityPhase previousPhase;
     public boolean isDirty = false;
 
 
@@ -63,4 +64,10 @@ public abstract class Ability implements INBTSerializable<CompoundNBT> {
 
     public abstract boolean tryTurnOn(LivingEntity user);
     public abstract boolean tryTurnOff(LivingEntity user);
+
+    public abstract void forceStop(LivingEntity user);
+
+    public void onPlayerInteract(PlayerInteractEvent event) {
+
+    }
 }

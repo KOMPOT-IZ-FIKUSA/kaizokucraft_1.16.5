@@ -2,6 +2,7 @@ package com.deadfikus.kaizokucraft.core.ability;
 
 import com.deadfikus.kaizokucraft.ModEnums;
 import com.deadfikus.kaizokucraft.ModMain;
+import com.deadfikus.kaizokucraft.core.ability.base.Ability;
 import com.deadfikus.kaizokucraft.core.network.ServerReceivedEvent;
 import com.deadfikus.kaizokucraft.core.storage.cap.player.PlayerCap;
 import net.minecraft.entity.player.PlayerEntity;
@@ -10,6 +11,7 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
 import net.minecraftforge.event.entity.living.LivingEvent;
+import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 
 public class AbilityEventHandler {
@@ -50,6 +52,15 @@ public class AbilityEventHandler {
             PlayerEntity player = (PlayerEntity) event.getEntityLiving();
             PlayerCap data = PlayerCap.get(player);
             data.cyborgProfile.setCola(0);
+        }
+    }
+
+    @SubscribeEvent
+    public void onPlayerInteract(PlayerInteractEvent event){
+        PlayerEntity player = (PlayerEntity) event.getEntityLiving();
+        PlayerCap data = PlayerCap.get(player);
+        for (Ability abl: data.getHotbarAbilities()) {
+            abl.onPlayerInteract(event);
         }
     }
 }

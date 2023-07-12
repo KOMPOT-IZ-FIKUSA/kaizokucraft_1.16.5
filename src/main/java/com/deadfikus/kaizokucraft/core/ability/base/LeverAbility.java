@@ -34,6 +34,7 @@ public abstract class LeverAbility extends Ability implements INBTSerializable<C
     }
 
     protected void updatePhaseTick(LivingEntity user) {
+        System.out.println(ticksToNextPhaseChange);
         if (ticksToNextPhaseChange == 0) {
             ModEnums.AbilityPhase phase = getCurrentPhase();
             if (phase == ModEnums.AbilityPhase.LOADING) {
@@ -72,6 +73,15 @@ public abstract class LeverAbility extends Ability implements INBTSerializable<C
     protected abstract void handleWorkEnded(LivingEntity user);
 
     protected abstract int calculateCooldown(LivingEntity user);
+
+    public void forceStop(LivingEntity user){
+        if(currentPhase == ModEnums.AbilityPhase.WORKING){
+            previousPhase =  currentPhase;
+            currentPhase = ModEnums.AbilityPhase.LOADING;
+            ticksToNextPhaseChange = calculateCooldown(user);
+
+        }
+    }
 
     @Override
     public final void onUserTick(LivingEntity user) {

@@ -23,6 +23,7 @@ import net.minecraftforge.common.util.INBTSerializable;
 import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 public class PlayerCap implements INBTSerializable<CompoundNBT>, IPlayerCap {
 
@@ -37,7 +38,7 @@ public class PlayerCap implements INBTSerializable<CompoundNBT>, IPlayerCap {
     public CyborgProfile cyborgProfile = new CyborgProfile();
     public final ArrayList<QuestBase> quests = new ArrayList<>();
     public ArrayList<Ability> abilities = new ArrayList<>();
-    private int[] hotbarAbilityIndices = new int[5];
+    public int[] hotbarAbilityIndices = new int[5];
 
     private int teamId = -1;
 
@@ -116,6 +117,15 @@ public class PlayerCap implements INBTSerializable<CompoundNBT>, IPlayerCap {
         setVeryDirty();
     }
 
+    public List<Ability> getHotbarAbilities(){
+        ArrayList<Ability> abl = new ArrayList<>();
+        for(int i = 0; i < hotbarAbilityIndices.length; i++){
+            if(hotbarAbilityIndices[i] != -1){
+                abl.add(abilities.get(hotbarAbilityIndices[i]));
+            }
+        }
+        return abl;
+    }
 
     public int getBalance() {
         return this.balance;
@@ -191,15 +201,20 @@ public class PlayerCap implements INBTSerializable<CompoundNBT>, IPlayerCap {
 
     @OnlyIn(Dist.CLIENT)
     public void tryToggleAbility(int hotbarIndex, LivingEntity user) {
+
         int inventoryAbilityIndex = hotbarAbilityIndices[hotbarIndex];
-        if (inventoryAbilityIndex == -1)
+        if (inventoryAbilityIndex == -1) {
+
             return;
+        }
         if (inventoryAbilityIndex >= abilities.size() || inventoryAbilityIndex < 0) {
             ModMain.logError("Trying to toggle ability with index " + inventoryAbilityIndex + " in inventory with " + abilities.size() + " abilities");
             return;
         }
         Ability ability = abilities.get(inventoryAbilityIndex);
+        System.out.println(ability.getCurrentPhase());
         if (ability.getCurrentPhase() == ModEnums.AbilityPhase.READY) {
+
             PacketHandler.NETWORK.sendToServer(new SAbilityTurnOnRequest(inventoryAbilityIndex));
         } else {
             PacketHandler.NETWORK.sendToServer(new SAbilityTurnOff(inventoryAbilityIndex));

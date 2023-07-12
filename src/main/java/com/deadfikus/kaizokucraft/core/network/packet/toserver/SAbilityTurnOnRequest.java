@@ -33,7 +33,7 @@ public class SAbilityTurnOnRequest {
     }
 
     public static void handle(SAbilityTurnOnRequest packet, Supplier<NetworkEvent.Context> ctx) {
-        System.out.println("Turn on request");
+
         if (ctx.get().getDirection() == NetworkDirection.PLAY_TO_SERVER) {
             ctx.get().setPacketHandled(true);
             ServerPlayerEntity player = ctx.get().getSender();

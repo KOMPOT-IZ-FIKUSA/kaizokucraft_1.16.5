@@ -63,4 +63,9 @@ public class XRayEye extends LeverAbility implements INBTSerializable<CompoundNB
     public void deserializeNBT(CompoundNBT nbt) {
         super.deserializeNBT(nbt.getCompound("super"));
     }
+
+    @Override
+    public void forceStop(LivingEntity user) {
+
+    }
 }

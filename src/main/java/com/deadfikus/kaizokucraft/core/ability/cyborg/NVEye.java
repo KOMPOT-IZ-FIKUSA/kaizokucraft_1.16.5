@@ -68,4 +68,9 @@ public class NVEye extends LeverAbility implements INBTSerializable<CompoundNBT>
     public void deserializeNBT(CompoundNBT nbt) {
         super.deserializeNBT(nbt.getCompound("super"));
     }
+
+    @Override
+    public void forceStop(LivingEntity user) {
+
+    }
 }

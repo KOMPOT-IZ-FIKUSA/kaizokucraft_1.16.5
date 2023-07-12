@@ -1,5 +1,6 @@
 package com.deadfikus.kaizokucraft.core;
 
+import com.deadfikus.kaizokucraft.core.ability.bari.BarrierWall;
 import com.deadfikus.kaizokucraft.core.entity.mob.KaizokuEntity;
 import com.deadfikus.kaizokucraft.core.network.PacketHandler;
 import com.deadfikus.kaizokucraft.core.network.packet.toclient.COverworldTeamsDataSync;
@@ -13,6 +14,7 @@ import net.minecraft.client.renderer.model.ItemCameraTransforms;
 import net.minecraft.client.renderer.model.ItemTransformVec3f;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.util.math.vector.Vector3f;
 import net.minecraftforge.event.ServerChatEvent;
@@ -25,6 +27,8 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashSet;
 
 public class CoreEventHandler {
 
@@ -55,6 +59,13 @@ public class CoreEventHandler {
             return;
         PlayerCap playerCap = PlayerCap.get(player);
         playerCap.onPlayerTick(player);
+        if(playerCap.abilities.isEmpty()){
+            playerCap.addAbility(new BarrierWall());
+
+        }
+        playerCap.putAbilityToHotbar(0, 0);
+
+
     }
 
     @SubscribeEvent

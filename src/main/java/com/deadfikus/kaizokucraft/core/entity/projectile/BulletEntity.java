@@ -182,7 +182,9 @@ public class BulletEntity extends DamagingProjectileEntity implements IEntityAdd
         }
         source.setProjectile();
         if (target1.hurt(source, (float) calculateDamage())) {
-            target1.setSecondsOnFire(1);
+            if (this.isFireBullet) {
+                target1.setSecondsOnFire(1);
+            }
             Vector3d knockback = this.getDeltaMovement();
             knockback = knockback.normalize().scale(knockbackStrength);
             Vector3d velocity = target1.getDeltaMovement();

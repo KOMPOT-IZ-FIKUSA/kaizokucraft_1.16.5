@@ -60,4 +60,9 @@ public class CyborgLaser extends LeverAbility implements INBTSerializable<Compou
     public void deserializeNBT(CompoundNBT nbt) {
         super.deserializeNBT(nbt.getCompound("super"));
     }
+
+    @Override
+    public void forceStop(LivingEntity user) {
+
+    }
 }
