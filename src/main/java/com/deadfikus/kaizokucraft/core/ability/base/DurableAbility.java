@@ -16,6 +16,7 @@ public abstract class DurableAbility extends Ability implements INBTSerializable
 
     public DurableAbility(AbilityEnum descriptionData) {
         super(descriptionData);
+        System.out.println("Git test");
         this.handleStartInNextTick = false;
         this.handleEndInNextTick = false;
         this.ticksToNextPhaseChange = 0;
