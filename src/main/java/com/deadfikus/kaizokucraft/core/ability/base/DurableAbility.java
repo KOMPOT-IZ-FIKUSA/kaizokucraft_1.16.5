@@ -30,9 +30,7 @@ public abstract class DurableAbility extends Ability implements INBTSerializable
     public void setUnavailable(LivingEntity user) {
         if (getCurrentPhase() != AbilityPhase.UNAVAILABLE) {
             setPhase(AbilityPhase.UNAVAILABLE, user);
-            ticksToNextPhaseChange = 0;
-            handleEndInNextTick = true;
-            handleStartInNextTick = false;
+            forceStop(user);
         }
     }
 
@@ -116,6 +114,22 @@ public abstract class DurableAbility extends Ability implements INBTSerializable
     }
 
     @Override
+    public void forceStop(LivingEntity user) {
+        if (currentPhase == AbilityPhase.UNAVAILABLE) {
+
+        } else if (currentPhase == AbilityPhase.WORKING) {
+            currentPhase = AbilityPhase.LOADING;
+            previousPhase = AbilityPhase.WORKING;
+            ticksToNextPhaseChange = calculateCooldownAfterWork(user, workTime);
+        } else if (currentPhase == AbilityPhase.CHARGING) {
+            currentPhase = AbilityPhase.LOADING;
+            previousPhase = AbilityPhase.CHARGING;
+            ticksToNextPhaseChange = calculateCooldownAfterCharge(user);
+        }
+
+    }
+
+    @Override
     public CompoundNBT serializeNBT() {
         CompoundNBT nbt = new CompoundNBT();
         nbt.put("super", super.serializeNBT());
@@ -132,4 +146,5 @@ public abstract class DurableAbility extends Ability implements INBTSerializable
         if (nbt.contains("handleStartInNextTick")) handleStartInNextTick = nbt.getBoolean("handleStartInNextTick");
         if (nbt.contains("handleEndInNextTick")) handleEndInNextTick = nbt.getBoolean("handleEndInNextTick");
     }
+
 }

@@ -4,7 +4,12 @@ import com.deadfikus.kaizokucraft.LinearInterpolation;
 import com.deadfikus.kaizokucraft.core.KaizokuItems;
 import com.deadfikus.kaizokucraft.core.entity.mob.MarineEntity;
 import com.deadfikus.kaizokucraft.core.storage.cap.player.PlayerCap;
+import com.mojang.blaze3d.matrix.MatrixStack;
+import com.mojang.blaze3d.vertex.IVertexBuilder;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.BufferBuilder;
+import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.renderer.entity.LivingRenderer;
 import net.minecraft.client.renderer.entity.model.BipedModel;
 import net.minecraft.client.renderer.model.ModelRenderer;
 import net.minecraft.data.Main;
@@ -18,6 +23,9 @@ import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
+
+import java.util.ArrayList;
 
 @Mixin(BipedModel.class)
 public class BipedModelMixin<T extends LivingEntity> {
@@ -30,12 +38,7 @@ public class BipedModelMixin<T extends LivingEntity> {
     @Shadow
     public ModelRenderer leftArm;
 
-    LinearInterpolation interpolation0 = new LinearInterpolation(3);
-    LinearInterpolation interpolation1 = new LinearInterpolation(3);
-    LinearInterpolation interpolation2 = new LinearInterpolation(3);
-    LinearInterpolation interpolation3 = new LinearInterpolation(3);
-    LinearInterpolation interpolation4 = new LinearInterpolation(3);
-    LinearInterpolation interpolation5 = new LinearInterpolation(3);
+    @Shadow public ModelRenderer rightLeg;
 
     private boolean shouldTakePistolElegante(T entityIn) {
         return entityIn instanceof PlayerEntity || entityIn instanceof MarineEntity;
@@ -114,4 +117,18 @@ public class BipedModelMixin<T extends LivingEntity> {
         setArmForPistol(entityIn, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
 
     }
+
+
+    //public void renderBarrierArm(T entity, MatrixStack matrixStack, IVertexBuilder buffer, int uv2, int overlayCoords) {
+    //     LivingRenderer renderer = (LivingRenderer) Minecraft.getInstance().getEntityRenderDispatcher().getRenderer(entity);
+//
+    //    boolean flag = renderer.isBodyVisible(p_225623_1_);
+    //    boolean flag1 = !flag && !p_225623_1_.isInvisibleTo(minecraft.player);
+    //    boolean flag2 = minecraft.shouldEntityAppearGlowing(p_225623_1_);
+    //    RenderType rendertype = renderer.getRenderType(entity, flag, flag1, flag2);
+//
+    //    ArrayList<ModelRenderer> res = new ArrayList<>();
+    //    res.add(rightArm);
+    //    rightArm.render(matrixStack, buffer, uv2, overlayCoords);
+    //}
 }

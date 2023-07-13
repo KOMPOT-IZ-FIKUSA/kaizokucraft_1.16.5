@@ -34,7 +34,6 @@ public abstract class LeverAbility extends Ability implements INBTSerializable<C
     }
 
     protected void updatePhaseTick(LivingEntity user) {
-        System.out.println(ticksToNextPhaseChange);
         if (ticksToNextPhaseChange == 0) {
             ModEnums.AbilityPhase phase = getCurrentPhase();
             if (phase == ModEnums.AbilityPhase.LOADING) {
@@ -48,9 +47,11 @@ public abstract class LeverAbility extends Ability implements INBTSerializable<C
     @Override
     public final boolean tryTurnOn(LivingEntity user) {
         if (getCurrentPhase() == ModEnums.AbilityPhase.READY) {
-            setPhase(ModEnums.AbilityPhase.WORKING, user);
-            handleStartInNextTick = true;
-            return true;
+            if (!turnOnAdditionalCondition(user)) return false;
+            boolean success = trySetPhase(ModEnums.AbilityPhase.WORKING, user);
+            if (success)
+                handleStartInNextTick = true;
+            return success;
         }
         return false;
     }
@@ -58,13 +59,19 @@ public abstract class LeverAbility extends Ability implements INBTSerializable<C
     @Override
     public final boolean tryTurnOff(LivingEntity user) {
         if (getCurrentPhase() == ModEnums.AbilityPhase.WORKING) {
-            setPhase(ModEnums.AbilityPhase.LOADING, user);
-            ticksToNextPhaseChange = calculateCooldown(user);
-            handleEndInNextTick = true;
-            return true;
+            if (!turnOffAdditionalCondition(user)) return false;
+            boolean success = trySetPhase(ModEnums.AbilityPhase.LOADING, user);
+            if (success) {
+                ticksToNextPhaseChange = calculateCooldown(user);
+                handleEndInNextTick = true;
+            }
+            return success;
         }
         return false;
     }
+
+    public boolean turnOnAdditionalCondition(LivingEntity user) {return true;}
+    public boolean turnOffAdditionalCondition(LivingEntity user) {return true;}
 
     protected abstract void handleWorkStarted(LivingEntity user);
 
@@ -75,11 +82,10 @@ public abstract class LeverAbility extends Ability implements INBTSerializable<C
     protected abstract int calculateCooldown(LivingEntity user);
 
     public void forceStop(LivingEntity user){
+        super.forceStop(user);
         if(currentPhase == ModEnums.AbilityPhase.WORKING){
-            previousPhase =  currentPhase;
-            currentPhase = ModEnums.AbilityPhase.LOADING;
+            setPhase(ModEnums.AbilityPhase.LOADING, user);
             ticksToNextPhaseChange = calculateCooldown(user);
-
         }
     }
 

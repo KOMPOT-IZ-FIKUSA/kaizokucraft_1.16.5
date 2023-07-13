@@ -29,6 +29,7 @@ import java.util.function.Predicate;
 
 import static java.lang.Boolean.TRUE;
 import static java.lang.Math.abs;
+import static java.lang.Math.random;
 
 public class BarrierWall extends LeverAbility implements INBTSerializable<CompoundNBT> {
     private final ArrayList<BlockPos> actBarriers;
@@ -53,15 +54,15 @@ public class BarrierWall extends LeverAbility implements INBTSerializable<Compou
             return;
         double b = Math.atan2(vec.z, vec.x);
         double a = Math.asin(vec.y);
-        int r = 7;
+        double r = 7;
         HashSet<BlockPos> set = new HashSet<>();
         double sigma = Math.PI/5, eps = 0.2 / r;
         for(double i = a - sigma/2; i < a + sigma/2; i += eps){
             for(double j = b - sigma; j < b + sigma; j += eps){
-                double y = user.getY() + Math.sin(i) * r;
+                double y = user.getEyeY() + Math.sin(i) * r;
                 double x = user.getX() + Math.cos(i) * Math.cos(j) * r;
                 double z = user.getZ() + Math.cos(i) * Math.sin(j) * r;
-                BlockPos cur = new BlockPos(x, y, z);
+                BlockPos cur = new BlockPos(Math.round(x), Math.round(y), Math.round(z));
                 set.add(cur);
             }
         }
@@ -93,7 +94,7 @@ public class BarrierWall extends LeverAbility implements INBTSerializable<Compou
     }
 
     @Override
-    public void onPlayerInteract(PlayerInteractEvent event) {
+    public void onUserInteract(PlayerInteractEvent event) {
         if(getCurrentPhase() == ModEnums.AbilityPhase.WORKING)
             forceStop(event.getEntityLiving());
 
@@ -103,7 +104,17 @@ public class BarrierWall extends LeverAbility implements INBTSerializable<Compou
 
     @Override
     protected int calculateCooldown(LivingEntity user) {
-        return 100;
+        return 120;
+    }
+
+    @Override
+    public boolean turnOnAdditionalCondition(LivingEntity user) {
+        return true;
+    }
+
+    @Override
+    public boolean turnOffAdditionalCondition(LivingEntity user) {
+        return true;
     }
 
     @Override

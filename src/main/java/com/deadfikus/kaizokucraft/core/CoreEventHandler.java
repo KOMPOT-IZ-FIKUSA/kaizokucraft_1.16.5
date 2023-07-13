@@ -1,5 +1,6 @@
 package com.deadfikus.kaizokucraft.core;
 
+import com.deadfikus.kaizokucraft.core.ability.bari.BarrierFist;
 import com.deadfikus.kaizokucraft.core.ability.bari.BarrierWall;
 import com.deadfikus.kaizokucraft.core.entity.mob.KaizokuEntity;
 import com.deadfikus.kaizokucraft.core.network.PacketHandler;
@@ -61,9 +62,12 @@ public class CoreEventHandler {
         playerCap.onPlayerTick(player);
         if(playerCap.abilities.isEmpty()){
             playerCap.addAbility(new BarrierWall());
-
+            playerCap.putAbilityToHotbar(0, 0);
         }
-        playerCap.putAbilityToHotbar(0, 0);
+        if(playerCap.abilities.size() == 1){
+            playerCap.addAbility(new BarrierFist());
+            playerCap.putAbilityToHotbar(1, 1);
+        }
 
 
     }

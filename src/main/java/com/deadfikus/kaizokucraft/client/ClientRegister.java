@@ -2,6 +2,8 @@ package com.deadfikus.kaizokucraft.client;
 
 
 import com.deadfikus.kaizokucraft.client.event.ClientEventsHandler;
+import com.deadfikus.kaizokucraft.client.gui.VignetteRenderer;
+import com.deadfikus.kaizokucraft.client.render.fruit.BariRenderHandler;
 import com.deadfikus.kaizokucraft.client.render.mob.MarineAdmiralRenderer;
 import com.deadfikus.kaizokucraft.client.render.mob.MarineRenderer;
 import com.deadfikus.kaizokucraft.client.render.mob.PirateRenderer;
@@ -48,6 +50,8 @@ public class ClientRegister {
 
     private void registerEventHandlers() {
         MinecraftForge.EVENT_BUS.register(new ClientEventsHandler());
+        MinecraftForge.EVENT_BUS.register(new VignetteRenderer());
+        MinecraftForge.EVENT_BUS.register(new BariRenderHandler());
 
     }
 

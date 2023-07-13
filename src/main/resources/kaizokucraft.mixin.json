@@ -5,16 +5,18 @@
   "package": "com.deadfikus.kaizokucraft.core.mixin",
   "refmap": "mixins.kaizokucraft.refmap.json",
   "mixins": [
+    "AbstractFireballEntityMixin",
     "BipedModelMixin",
+    "BipedRendererMixin",
     "DamageSourceMixin",
     "InventoryMixin",
     "MinecraftMixin",
-    "ProjectileMixin",
-    "AbstractFireballEntityMixin"
+    "ProjectileMixin"
   ],
   "client": [
     "AbstractGuiMixin",
-    "BlockModelMixin"
+    "BlockModelMixin",
+    "MatrixStackMixin"
   ],
   "server": []
 }

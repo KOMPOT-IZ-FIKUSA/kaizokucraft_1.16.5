@@ -11,7 +11,9 @@ import com.deadfikus.kaizokucraft.core.quest.QuestBase;
 import com.deadfikus.kaizokucraft.core.quest.QuestClass;
 import com.deadfikus.kaizokucraft.core.storage.CyborgProfile;
 import com.deadfikus.kaizokucraft.core.storage.cap.world.OverworldTeamsCapProvider;
+import com.deadfikus.kaizokucraft.core.storage.serialization.MultitypeSerializer;
 import com.deadfikus.kaizokucraft.core.teams.KaizokuTeamSerializable;
+import com.mojang.datafixers.kinds.IdF;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.CompoundNBT;
@@ -26,7 +28,6 @@ import java.util.Arrays;
 import java.util.List;
 
 public class PlayerCap implements INBTSerializable<CompoundNBT>, IPlayerCap {
-
     public int worldDataDirtiness = -1;
     private int balance = 0;
     private int hakiAttackXp = 0;
@@ -212,7 +213,6 @@ public class PlayerCap implements INBTSerializable<CompoundNBT>, IPlayerCap {
             return;
         }
         Ability ability = abilities.get(inventoryAbilityIndex);
-        System.out.println(ability.getCurrentPhase());
         if (ability.getCurrentPhase() == ModEnums.AbilityPhase.READY) {
 
             PacketHandler.NETWORK.sendToServer(new SAbilityTurnOnRequest(inventoryAbilityIndex));
@@ -260,8 +260,7 @@ public class PlayerCap implements INBTSerializable<CompoundNBT>, IPlayerCap {
             nbt.put("quests" + i, quests.get(i).serializeNBT());
         }
         for (int i = 0; i < abilities.size(); i++) {
-            nbt.putShort("abilitiesClasses" + i, AbilityEnum.get(abilities.get(i).getClass()).getI());
-            nbt.put("abilities" + i, abilities.get(i).serializeNBT());
+            nbt.put("abilities" + i, MultitypeSerializer.serialize(abilities.get(i), AbilityEnum.getClasses()));
         }
         for (int i = 0; i < hotbarAbilityIndices.length; i++) {
             nbt.putInt("hotbarAbilityIndices" + i, hotbarAbilityIndices[i]);
@@ -302,14 +301,8 @@ public class PlayerCap implements INBTSerializable<CompoundNBT>, IPlayerCap {
         i = 0;
         abilities.clear();
         while (nbt.contains("abilities" + i)) {
-            CompoundNBT abilityData = nbt.getCompound("abilities" + i);
-            AbilityEnum abilityEnum = AbilityEnum.values[nbt.getShort("abilitiesClasses" + i)];
-            try {
-                Ability instance = abilityEnum.initAbility(abilityData);
-                abilities.add(instance);
-            } catch (InstantiationException | IllegalAccessException e) {
-                e.printStackTrace();
-            }
+            Ability instance = MultitypeSerializer.deserialize(nbt.getCompound("abilities" + i), AbilityEnum.getClasses());
+            abilities.add(instance);
             i++;
         }
 

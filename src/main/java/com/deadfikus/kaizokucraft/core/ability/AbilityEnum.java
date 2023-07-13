@@ -5,6 +5,7 @@ import com.deadfikus.kaizokucraft.ModEnums.AbilityGroup;
 import com.deadfikus.kaizokucraft.ModEnums.Fruit;
 import com.deadfikus.kaizokucraft.ModEnums.AbilityType;
 import com.deadfikus.kaizokucraft.ModMain;
+import com.deadfikus.kaizokucraft.core.ability.bari.BarrierFist;
 import com.deadfikus.kaizokucraft.core.ability.bari.BarrierWall;
 import com.deadfikus.kaizokucraft.core.ability.base.Ability;
 import com.deadfikus.kaizokucraft.core.ability.cyborg.CyborgLaser;
@@ -12,12 +13,15 @@ import com.deadfikus.kaizokucraft.core.ability.cyborg.NVEye;
 import com.deadfikus.kaizokucraft.core.ability.cyborg.XRayEye;
 import net.minecraft.nbt.CompoundNBT;
 
+import java.util.ArrayList;
+
 public enum AbilityEnum {
-    BARRIER_WALL(BarrierWall.class, "barrier_wall", AbilityGroup.FRUIT, Fruit.BARI, AbilityType.BUF),
+    BARRIER_WALL(BarrierWall.class, "barrier_wall", AbilityGroup.FRUIT, Fruit.BARI, AbilityType.BUILDING),
+    BARRIER_FIST(BarrierFist.class, "barrier_fist", AbilityGroup.FRUIT, Fruit.BARI, AbilityType.HIT),
     XRAY_EYE(XRayEye.class, "xray_eye", AbilityGroup.CYBORG, Fruit.NONE, AbilityType.BUF),
     NV_EYE(NVEye.class, "nv_eye", AbilityGroup.CYBORG, Fruit.NONE, AbilityType.BUF),
     CYBORG_LASER(CyborgLaser.class, "cyborg_laser", AbilityGroup.CYBORG, Fruit.NONE, AbilityType.PROJECTILE);
-    public Class<? extends Ability> class_;
+    public final Class<? extends Ability> class_;
     public final String name;
     public final String description;
     public final String ebanName;
@@ -55,14 +59,17 @@ public enum AbilityEnum {
         throw new IllegalArgumentException("Unable to get AbilityClass for " + class_.getName());
     }
 
-    public Ability initAbility(CompoundNBT nbt) throws InstantiationException, IllegalAccessException {
-        Ability ability = class_.newInstance();
-        ability.deserializeNBT(nbt);
-        return ability;
-    }
 
     public Ability initAbility() throws InstantiationException, IllegalAccessException {
         Ability ability = class_.newInstance();
         return ability;
+    }
+
+    public static ArrayList<Class<? extends Ability>> getClasses() {
+        ArrayList<Class<? extends Ability>> res = new ArrayList<>();
+        for (AbilityEnum abl : values()) {
+            res.add(abl.class_);
+        }
+        return res;
     }
 }

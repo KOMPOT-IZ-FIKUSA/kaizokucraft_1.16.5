@@ -5,9 +5,12 @@ import com.deadfikus.kaizokucraft.core.ability.AbilityEnum;
 import com.deadfikus.kaizokucraft.core.ability.AbilityEvent;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.nbt.CompoundNBT;
+import net.minecraftforge.client.event.RenderGameOverlayEvent;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.util.INBTSerializable;
+import net.minecraftforge.event.entity.living.LivingDamageEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
+import net.minecraftforge.eventbus.api.Event;
 
 public abstract class Ability implements INBTSerializable<CompoundNBT> {
     private AbilityEnum descriptionData;
@@ -36,11 +39,25 @@ public abstract class Ability implements INBTSerializable<CompoundNBT> {
     public final AbilityEnum getDescriptionData() {return this.descriptionData;}
     protected void setPhase(AbilityPhase p, LivingEntity user) {
         if (p != currentPhase) {
+            MinecraftForge.EVENT_BUS.post(new AbilityEvent.PhaseChangeEvent.Pre(user, this, p, false));
             this.previousPhase = currentPhase;
             this.currentPhase = p;
             this.isDirty = true;
-            MinecraftForge.EVENT_BUS.post(new AbilityEvent.PhaseChangedEvent(user, this));
+            MinecraftForge.EVENT_BUS.post(new AbilityEvent.PhaseChangeEvent.Post(user, this));
         }
+    }
+    protected boolean trySetPhase(AbilityPhase p, LivingEntity user) {
+        if (p == currentPhase) {
+            return true;
+        }
+        Event e = new AbilityEvent.PhaseChangeEvent.Pre(user, this, p, true);
+        MinecraftForge.EVENT_BUS.post(e);
+        if (e.isCanceled()) return false;
+        this.previousPhase = currentPhase;
+        this.currentPhase = p;
+        this.isDirty = true;
+        MinecraftForge.EVENT_BUS.post(new AbilityEvent.PhaseChangeEvent.Post(user, this));
+        return true;
     }
 
     @Override
@@ -65,9 +82,15 @@ public abstract class Ability implements INBTSerializable<CompoundNBT> {
     public abstract boolean tryTurnOn(LivingEntity user);
     public abstract boolean tryTurnOff(LivingEntity user);
 
-    public abstract void forceStop(LivingEntity user);
+    public void forceStop(LivingEntity user) {
+        MinecraftForge.EVENT_BUS.post(new AbilityEvent.ForceStopEvent(user, this));
+    };
 
-    public void onPlayerInteract(PlayerInteractEvent event) {
+    public void onUserInteract(PlayerInteractEvent event) {}
+
+    public void onUserDealsDamage(LivingDamageEvent event, LivingEntity user) {}
+
+    public void onRenderGameOverlay(RenderGameOverlayEvent event, LivingEntity user) {
 
     }
 }

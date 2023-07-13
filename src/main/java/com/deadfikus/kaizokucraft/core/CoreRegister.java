@@ -6,7 +6,6 @@ import com.deadfikus.kaizokucraft.core.entity.KaizokuEntityTypes;
 import com.deadfikus.kaizokucraft.core.entity.mob.MarineAdmiralEntity;
 import com.deadfikus.kaizokucraft.core.entity.mob.MarineEntity;
 import com.deadfikus.kaizokucraft.core.entity.mob.PirateEntity;
-import com.deadfikus.kaizokucraft.core.entity.projectile.BulletEntity;
 import com.deadfikus.kaizokucraft.core.network.PacketHandler;
 import com.deadfikus.kaizokucraft.core.quest.QuestsEventsHandler;
 import com.deadfikus.kaizokucraft.core.storage.cap.CapabilityEventHandler;
@@ -55,7 +54,7 @@ public class CoreRegister {
 
 
     private void registerModEvents() {
-        MinecraftForge.EVENT_BUS.register(AbilityEvent.PhaseChangedEvent.class);
+        MinecraftForge.EVENT_BUS.register(AbilityEvent.PhaseChangeEvent.class);
         MinecraftForge.EVENT_BUS.register(AbilityEvent.ForceStopEvent.class);
     }
 
