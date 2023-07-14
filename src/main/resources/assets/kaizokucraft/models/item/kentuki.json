@@ -1,0 +1,41 @@
+{
+  "parent": "forge:item/default",
+  "loader": "forge:obj",
+  "model": "kaizokucraft:models/item/kentuki.obj",
+  "textures": {
+    "particle": "block/redstone_block"
+  },
+  "transform": {
+    "thirdperson_righthand": {
+      "scale": 0.045,
+      "translation": [-0.95, -1.08, -0.97],
+      "rotation": [0, 90, 0]
+    },
+    "thirdperson_lefthand": {
+      "scale": 0.045,
+      "translation": [-1.05, -1.08, -0.9],
+      "rotation": [0, -90, 0]
+    },
+    "firstperson_righthand": {
+      "scale": 0.045,
+      "translation": [-0.95, -1.08, -0.97],
+      "rotation": [0, 90, 0]
+    },
+    "firstperson_lefthand": {
+      "scale": 0.045,
+      "translation": [-1.05, -1.08, -0.9],
+      "rotation": [0, -90, 0]
+    },
+    "gui": {
+      "translation": [-0.75, -1.22, 0],
+      "rotation": [0, 170, 34],
+      "scale": 0.072
+    },
+    "ground": {
+      "scale": 0.045,
+      "translation": [-1.2, -1.02, -0.92],
+      "rotation": [0, 0, 0]
+    }
+  },
+  "gui_light": "front"
+}

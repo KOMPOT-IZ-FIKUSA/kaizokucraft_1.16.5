@@ -1,10 +1,24 @@
 package com.deadfikus.kaizokucraft.core.item;
 
 import com.deadfikus.kaizokucraft.core.entity.projectile.BulletEntity;
-import com.deadfikus.kaizokucraft.core.network.PacketHandler;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.player.ServerPlayerEntity;
+import net.minecraft.item.ItemStack;
+import net.minecraft.item.ItemTier;
+import net.minecraft.item.TieredItem;
+import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.nbt.INBT;
+import net.minecraft.util.ActionResult;
+import net.minecraft.util.Hand;
+import net.minecraft.util.math.vector.Vector3d;
+import net.minecraft.world.World;
+
+import com.deadfikus.kaizokucraft.core.entity.projectile.BulletEntity;
+import net.minecraft.enchantment.Enchantment;
+import net.minecraft.enchantment.EnchantmentHelper;
+import net.minecraft.enchantment.Enchantments;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.*;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.nbt.INBT;
@@ -13,9 +27,9 @@ import net.minecraft.util.Hand;
 import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.world.World;
 
-public class PistolItem extends TieredItem {
+public class KentukiItem extends TieredItem {
 
-    public PistolItem(Properties properties) {
+    public KentukiItem(Properties properties) {
         super(ItemTier.IRON, properties.stacksTo(1));
 
     }
@@ -48,7 +62,7 @@ public class PistolItem extends TieredItem {
         CompoundNBT tag = pistol.getTag();
         if (tag == null) {
             tag = new CompoundNBT();
-            tag.putInt("cooldown", 20);
+            tag.putInt("cooldown", 30);
             pistol.setTag(tag);
             return ActionResult.fail(pistol);
         }
@@ -75,7 +89,7 @@ public class PistolItem extends TieredItem {
                         }
                     }
                     BulletItemBase item = (BulletItemBase) stackInSlot.getItem();
-                    Vector3d bulletMotion = playerIn.getLookAngle().scale(4);
+                    Vector3d bulletMotion = playerIn.getLookAngle().scale(4.7);
                     BulletEntity bullet = BulletEntity.init(
                             worldIn,
                             item.isKairoseki,
@@ -83,14 +97,14 @@ public class PistolItem extends TieredItem {
                             punchLvl,
                             playerIn,
                             playerIn.getX(), playerIn.getEyeY() - 0.1d, playerIn.getZ(),
-                            bulletMotion.x, bulletMotion.y, bulletMotion.z, 0.96f, 5, 0.9f
+                            bulletMotion.x, bulletMotion.y, bulletMotion.z, 0.98f, 1, 1.4f
                     );
                     worldIn.addFreshEntity(bullet);
                     if (!playerIn.isCreative()) {
                         stackInSlot.shrink(1);
                         pistol.setDamageValue(pistol.getDamageValue() - 1);
                     }
-                    pistol.getTag().putInt("cooldown", 20);
+                    pistol.getTag().putInt("cooldown", 35);
                     return ActionResult.success(pistol);
                 }
             }

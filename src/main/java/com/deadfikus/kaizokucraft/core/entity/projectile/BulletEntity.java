@@ -12,6 +12,7 @@ import net.minecraft.entity.monster.EndermanEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.projectile.DamagingProjectileEntity;
 import net.minecraft.entity.projectile.ProjectileHelper;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.IPacket;
@@ -37,6 +38,8 @@ public class BulletEntity extends DamagingProjectileEntity implements IEntityAdd
     public boolean isFireBullet = false;
     public int knockbackStrength = 0;
     private int ticksAlive;
+    private float inertia = 0.96f;
+    private float damageK = 1;
 
     public static Method endermanTeleport;
 
@@ -47,14 +50,16 @@ public class BulletEntity extends DamagingProjectileEntity implements IEntityAdd
         super(KaizokuEntityTypes.BULLET_PROJECTILE.get(), world);
     }
 
-    public static BulletEntity init(World world, boolean isKairoseki, boolean isFire, int knockbackStrength, LivingEntity shooter, double posX, double posY, double posZ, double velX, double velY, double velZ) {
+    public static BulletEntity init(World world, boolean isKairoseki, boolean isFire, int knockbackStrength, LivingEntity shooter, double posX, double posY, double posZ, double velX, double velY, double velZ, float inertia, float accuracyLoss, float damageK) {
         BulletEntity e = new BulletEntity(KaizokuEntityTypes.BULLET_PROJECTILE.get(), world);
         e.isKairosekiBullet = isKairoseki;
         e.isFireBullet = isFire;
         e.knockbackStrength = knockbackStrength;
         e.setOwner(shooter);
-        e.shoot(velX, velY, velZ, MathHelper.sqrt(velX * velX + velY * velY + velZ * velZ), 1f);
+        e.shoot(velX, velY, velZ, MathHelper.sqrt(velX * velX + velY * velY + velZ * velZ), accuracyLoss);
         e.setPos(posX, posY, posZ);
+        e.inertia = inertia;
+        e.damageK = damageK;
         return e;
     }
 
@@ -89,7 +94,7 @@ public class BulletEntity extends DamagingProjectileEntity implements IEntityAdd
             remove();
             return;
         }
-        if (getDeltaMovement().length() < 1) {
+        if (getDeltaMovement().length() < 1.5f) {
             remove();
             return;
         }
@@ -183,7 +188,7 @@ public class BulletEntity extends DamagingProjectileEntity implements IEntityAdd
         source.setProjectile();
         if (target1.hurt(source, (float) calculateDamage())) {
             if (this.isFireBullet) {
-                target1.setSecondsOnFire(1);
+                target1.setSecondsOnFire(2);
             }
             Vector3d knockback = this.getDeltaMovement();
             knockback = knockback.normalize().scale(knockbackStrength);
@@ -194,7 +199,7 @@ public class BulletEntity extends DamagingProjectileEntity implements IEntityAdd
     }
 
     public double calculateDamage() {
-        return this.getDeltaMovement().length() * 2;
+        return this.getDeltaMovement().length() * 2 * damageK;
     }
 
     @Override
@@ -203,17 +208,21 @@ public class BulletEntity extends DamagingProjectileEntity implements IEntityAdd
         this.remove();
     }
 
-    public ItemStack getItem() {
+    public ItemStack getItemStack() {
+        return getItem().getDefaultInstance();
+    }
+
+    public Item getItem() {
         if (this.isKairosekiBullet) {
             if (this.isFireBullet) {
-                return KaizokuItems.FIRE_KAIROSEKI_BULLET.getDefaultInstance();
+                return KaizokuItems.FIRE_KAIROSEKI_BULLET;
             } else {
-                return KaizokuItems.KAIROSEKI_BULLET.getDefaultInstance();
+                return KaizokuItems.KAIROSEKI_BULLET;
             }
         } else if (this.isFireBullet) {
-            return KaizokuItems.FIRE_BULLET.getDefaultInstance();
+            return KaizokuItems.FIRE_BULLET;
         } else {
-            return KaizokuItems.IRON_BULLET.getDefaultInstance();
+            return KaizokuItems.IRON_BULLET;
         }
     }
 
@@ -229,6 +238,8 @@ public class BulletEntity extends DamagingProjectileEntity implements IEntityAdd
     }
 
 
+
+
     @Override
     public boolean isInvulnerable() {
         return true;
@@ -236,7 +247,7 @@ public class BulletEntity extends DamagingProjectileEntity implements IEntityAdd
 
     @Override
     protected float getInertia() {
-        return 0.96f;
+        return inertia;
     }
 
     protected float getGravityAcceleration() {
@@ -247,12 +258,16 @@ public class BulletEntity extends DamagingProjectileEntity implements IEntityAdd
     public void writeSpawnData(PacketBuffer buffer) {
         buffer.writeBoolean(isKairosekiBullet);
         buffer.writeBoolean(isFireBullet);
+        buffer.writeFloat(inertia);
+        buffer.writeFloat(damageK);
     }
 
     @Override
     public void readSpawnData(PacketBuffer buffer) {
         isKairosekiBullet = buffer.readBoolean();
         isFireBullet = buffer.readBoolean();
+        inertia = buffer.readFloat();
+        damageK = buffer.readFloat();
     }
 
     @Override
@@ -272,6 +287,8 @@ public class BulletEntity extends DamagingProjectileEntity implements IEntityAdd
         this.isFireBullet = nbt.getBoolean("isFireBullet");
         this.isKairosekiBullet = nbt.getBoolean("isKairosekiBullet");
         this.knockbackStrength = nbt.getInt("knockbackStrength");
+        this.inertia = nbt.getFloat("inertia");
+        this.damageK = nbt.getFloat("damageK");
     }
 
     @Override
@@ -280,6 +297,8 @@ public class BulletEntity extends DamagingProjectileEntity implements IEntityAdd
         nbt.putBoolean("isFireBullet", isFireBullet);
         nbt.putBoolean("isKairosekiBullet", isKairosekiBullet);
         nbt.putInt("knockbackStrength", knockbackStrength);
+        nbt.putFloat("inertia", inertia);
+        nbt.putFloat("damageK", damageK);
         return nbt;
     }
 }

@@ -29,7 +29,6 @@ public class PacketHandler {
         NETWORK.registerMessage(messageID++, SAbilityTurnOff.class, SAbilityTurnOff::encode, SAbilityTurnOff::decode, SAbilityTurnOff::handle);
         NETWORK.registerMessage(messageID++, CPlayerDataSync.class, CPlayerDataSync::encode, CPlayerDataSync::decode, CPlayerDataSync::handle);
         NETWORK.registerMessage(messageID++, COverworldTeamsDataSync.class, COverworldTeamsDataSync::encode, COverworldTeamsDataSync::decode, COverworldTeamsDataSync::handle);
-        NETWORK.registerMessage(messageID++, COverworldTeamsDataSync.class, COverworldTeamsDataSync::encode, COverworldTeamsDataSync::decode, COverworldTeamsDataSync::handle);
     }
 
     public static <MSG> void sendToPlayer(MSG message, ServerPlayerEntity player) {

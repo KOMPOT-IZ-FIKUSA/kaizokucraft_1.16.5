@@ -38,7 +38,7 @@ public class BulletRenderer extends EntityRenderer<BulletEntity> {
     public void render(BulletEntity bullet, float p_225623_2_, float p_225623_3_, MatrixStack matrixStack, IRenderTypeBuffer iRenderTypeBuffer, int p_225623_6_) {
         super.render(bullet, p_225623_2_, p_225623_3_, matrixStack, iRenderTypeBuffer, p_225623_6_);
         RenderType renderType = Atlases.translucentCullBlockSheet();
-        IBakedModel model = Minecraft.getInstance().getItemRenderer().getModel(bullet.getItem(), bullet.getCommandSenderWorld(), null);
+        IBakedModel model = Minecraft.getInstance().getItemRenderer().getModel(bullet.getItemStack(), bullet.getCommandSenderWorld(), null);
         IVertexBuilder buffer = ItemRenderer.getFoilBufferDirect(iRenderTypeBuffer, renderType, true, false);
         List<BakedQuad> quads = BakedQuadUtils.getFromBakedModel(model);
         matrixStack.pushPose();

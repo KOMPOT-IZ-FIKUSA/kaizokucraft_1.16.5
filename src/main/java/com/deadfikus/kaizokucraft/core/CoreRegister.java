@@ -91,6 +91,7 @@ public class CoreRegister {
             event.getRegistry().register(KaizokuItems.FIRE_KAIROSEKI_BULLET);
             event.getRegistry().register(KaizokuItems.IRON_KNIFE);
             event.getRegistry().register(KaizokuItems.MARINE_CAP);
+            event.getRegistry().register(KaizokuItems.KENTUKI);
         }
 
         @SubscribeEvent
