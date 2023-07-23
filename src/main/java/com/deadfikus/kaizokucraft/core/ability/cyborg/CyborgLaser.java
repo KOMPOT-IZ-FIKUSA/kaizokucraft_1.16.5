@@ -10,6 +10,7 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraftforge.common.util.INBTSerializable;
+import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 
 public class CyborgLaser extends LeverAbility implements INBTSerializable<CompoundNBT> {
     public CyborgLaser() {
@@ -59,6 +60,11 @@ public class CyborgLaser extends LeverAbility implements INBTSerializable<Compou
     @Override
     public void deserializeNBT(CompoundNBT nbt) {
         super.deserializeNBT(nbt.getCompound("super"));
+    }
+
+    @Override
+    public void onClickBlock(PlayerInteractEvent.LeftClickBlock event) {
+
     }
 
     @Override

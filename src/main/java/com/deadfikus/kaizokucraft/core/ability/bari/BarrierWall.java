@@ -148,6 +148,11 @@ public class BarrierWall extends LeverAbility implements INBTSerializable<Compou
         }
     }
 
+    @Override
+    public void onClickBlock(PlayerInteractEvent.LeftClickBlock event) {
+
+    }
+
 
     @Override
     public void forceStop(LivingEntity user) {

@@ -85,7 +85,7 @@ public abstract class Ability implements INBTSerializable<CompoundNBT> {
     public void forceStop(LivingEntity user) {
         MinecraftForge.EVENT_BUS.post(new AbilityEvent.ForceStopEvent(user, this));
     };
-
+    public void onClickBlock(PlayerInteractEvent.LeftClickBlock event){}
     public void onUserInteract(PlayerInteractEvent event) {}
 
     public void onUserDealsDamage(LivingDamageEvent event, LivingEntity user) {}

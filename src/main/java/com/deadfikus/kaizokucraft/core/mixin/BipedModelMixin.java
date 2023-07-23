@@ -49,7 +49,7 @@ public class BipedModelMixin<T extends LivingEntity> {
         Item itemInOffHand = entityIn.getOffhandItem().getItem();
         float armYRot;
         if (shouldTakePistolElegante(entityIn)) {
-            if (itemInMainHand == KaizokuItems.PISTOL) {
+            if (itemInMainHand == KaizokuItems.PISTOL || itemInMainHand == KaizokuItems.KENTUKI) {
                 this.rightArm.xRot = (float) Math.PI * (headPitch / 180 - 0.49f);
                 armYRot = (float) Math.PI * netHeadYaw / 192f;
                 this.rightArm.yRot = armYRot * 0.97f;
@@ -64,7 +64,7 @@ public class BipedModelMixin<T extends LivingEntity> {
                     this.leftArm.zRot = 0;
                     this.leftArm.xRot = (float) Math.PI * (headPitch / 180 - 0.48f);
                     this.leftArm.yRot = armYRot * 0.5f + 0.9f;
-                } else if (itemInOffHand == KaizokuItems.PISTOL) { // пистолет в обоих руках
+                } else if (itemInOffHand == KaizokuItems.PISTOL || itemInOffHand == KaizokuItems.KENTUKI) { // пистолет в обоих руках
                     this.leftArm.xRot = (float) Math.PI * (headPitch / 180 - 0.49f);
                     armYRot = (float) Math.PI * netHeadYaw / 192f;
                     this.leftArm.yRot = armYRot * 0.97f;
@@ -76,7 +76,7 @@ public class BipedModelMixin<T extends LivingEntity> {
                     this.rightArm.xRot -= Math.abs(armYRot);
                 }
 
-            } else if (itemInOffHand == KaizokuItems.PISTOL) {
+            } else if (itemInOffHand == KaizokuItems.PISTOL || itemInOffHand == KaizokuItems.KENTUKI) {
                 this.leftArm.xRot = (float) Math.PI * (headPitch / 180 - 0.49f);
                 armYRot = (float) Math.PI * netHeadYaw / 192f;
                 this.leftArm.yRot = armYRot * 0.97f;

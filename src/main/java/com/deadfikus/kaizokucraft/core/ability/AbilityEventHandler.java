@@ -3,6 +3,7 @@ package com.deadfikus.kaizokucraft.core.ability;
 import com.deadfikus.kaizokucraft.core.ability.base.Ability;
 import com.deadfikus.kaizokucraft.core.storage.EntityAbilityGetter;
 import com.deadfikus.kaizokucraft.core.storage.cap.player.PlayerCap;
+import jdk.nashorn.internal.ir.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.player.ClientPlayerEntity;
 import net.minecraft.entity.Entity;
@@ -18,6 +19,7 @@ import net.minecraftforge.event.entity.living.LivingDamageEvent;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
 import net.minecraftforge.event.entity.living.LivingEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
+import net.minecraftforge.eventbus.api.Event;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 
 public class AbilityEventHandler {
@@ -84,6 +86,17 @@ public class AbilityEventHandler {
         }
     }
 
+
+    @SubscribeEvent
+    public  void onClickBlock(PlayerInteractEvent.LeftClickBlock event){
+        Entity owner = event.getEntityLiving();
+
+        if (owner instanceof LivingEntity) {
+            for (Ability ability : EntityAbilityGetter.getHotbarAbilities(owner)) {
+                   ability.onClickBlock(event);
+            }
+        }
+    }
     @SubscribeEvent
     public void onRenderGameOverlay(RenderGameOverlayEvent event) {
         ClientPlayerEntity player = Minecraft.getInstance().player;
@@ -94,4 +107,7 @@ public class AbilityEventHandler {
         }
 
     }
+
+
+
 }

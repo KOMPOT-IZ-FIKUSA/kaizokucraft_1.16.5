@@ -14,9 +14,11 @@
     "ProjectileMixin"
   ],
   "client": [
+    "AbstractClientPlayerEntityMixin",
     "AbstractGuiMixin",
     "BlockModelMixin",
-    "MatrixStackMixin"
+    "MatrixStackMixin",
+    "PlayerRendererMixin"
   ],
   "server": []
 }

@@ -6,6 +6,7 @@ import com.deadfikus.kaizokucraft.core.ability.AbilityEnum;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraftforge.common.util.INBTSerializable;
+import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 
 public abstract class LeverAbility extends Ability implements INBTSerializable<CompoundNBT> {
 
@@ -126,4 +127,6 @@ public abstract class LeverAbility extends Ability implements INBTSerializable<C
         if (nbt.contains("handleEndInNextTick")) handleEndInNextTick = nbt.getBoolean("handleEndInNextTick");
 
     }
+
+    public abstract void onClickBlock(PlayerInteractEvent.LeftClickBlock event);
 }

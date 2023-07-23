@@ -3,19 +3,13 @@ package com.deadfikus.kaizokucraft.core.ability.bari;
 import com.deadfikus.kaizokucraft.ModEnums;
 import com.deadfikus.kaizokucraft.client.event.RenderCustomVignetteEvent;
 import com.deadfikus.kaizokucraft.core.ability.AbilityEnum;
-import com.deadfikus.kaizokucraft.core.ability.base.Ability;
 import com.deadfikus.kaizokucraft.core.ability.base.LeverAbility;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.WorldRenderer;
-import net.minecraft.client.renderer.entity.PlayerRenderer;
-import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.util.Hand;
+import net.minecraft.world.Explosion;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
-import net.minecraftforge.common.ForgeHooks;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.entity.living.LivingDamageEvent;
-import net.minecraftforge.event.entity.living.LivingEvent;
+import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 
 public class BarrierFist extends LeverAbility {
     public BarrierFist() {
@@ -81,4 +75,15 @@ public class BarrierFist extends LeverAbility {
         opacityMovingAverage = opacityMovingAverage * 0.95f + opacity * 0.05f;
         MinecraftForge.EVENT_BUS.post(new RenderCustomVignetteEvent(RenderCustomVignetteEvent.VignetteType.BARRIER_FIST, opacityMovingAverage, event.getMatrixStack()));
     }
+
+    @Override
+    public  void onClickBlock(PlayerInteractEvent.LeftClickBlock event){
+        if (event.isCanceled()) return;
+        if (currentPhase != ModEnums.AbilityPhase.WORKING) return;
+        if (!tryTurnOff(event.getEntityLiving())) return;
+
+        event.getEntityLiving().getCommandSenderWorld().explode(event.getEntityLiving(), event.getPos().getX(), event.getPos().getY(), event.getPos().getZ(), 1.5F, false, Explosion.Mode.DESTROY);
+    }
+
+
 }

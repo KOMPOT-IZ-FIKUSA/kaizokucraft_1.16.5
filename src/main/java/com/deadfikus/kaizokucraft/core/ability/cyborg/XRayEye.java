@@ -9,6 +9,7 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraftforge.common.util.INBTSerializable;
+import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 
 public class XRayEye extends LeverAbility implements INBTSerializable<CompoundNBT> {
     public XRayEye() {
@@ -62,6 +63,11 @@ public class XRayEye extends LeverAbility implements INBTSerializable<CompoundNB
     @Override
     public void deserializeNBT(CompoundNBT nbt) {
         super.deserializeNBT(nbt.getCompound("super"));
+    }
+
+    @Override
+    public void onClickBlock(PlayerInteractEvent.LeftClickBlock event) {
+
     }
 
     @Override

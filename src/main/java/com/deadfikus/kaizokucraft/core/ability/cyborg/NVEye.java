@@ -12,6 +12,7 @@ import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.potion.EffectInstance;
 import net.minecraft.potion.Effects;
 import net.minecraftforge.common.util.INBTSerializable;
+import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 
 public class NVEye extends LeverAbility implements INBTSerializable<CompoundNBT> {
     public NVEye() {
@@ -67,6 +68,11 @@ public class NVEye extends LeverAbility implements INBTSerializable<CompoundNBT>
     @Override
     public void deserializeNBT(CompoundNBT nbt) {
         super.deserializeNBT(nbt.getCompound("super"));
+    }
+
+    @Override
+    public void onClickBlock(PlayerInteractEvent.LeftClickBlock event) {
+
     }
 
     @Override
