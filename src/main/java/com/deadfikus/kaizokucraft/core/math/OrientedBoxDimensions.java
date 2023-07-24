@@ -35,6 +35,19 @@ public class OrientedBoxDimensions implements INBTSerializable<CompoundNBT> {
         return new double[]{width.y, height.y, thickness.y};
     }
 
+    public double getAxisAlignedMaxWidth() {
+        return Math.max(Math.abs(width.x) + Math.abs(height.x) + Math.abs(thickness.x), Math.abs(width.z) + Math.abs(height.z) + Math.abs(thickness.z));
+    }
+
+    public double getAxisAlignedHeight() {
+        return Math.abs(width.y) + Math.abs(height.y) + Math.abs(thickness.y);
+    }
+
+    @Override
+    public String toString() {
+        return String.format("OrientedBox[%s, %s, %s]", width, height, thickness);
+    }
+
     @Override
     public CompoundNBT serializeNBT() {
         CompoundNBT res = new CompoundNBT();

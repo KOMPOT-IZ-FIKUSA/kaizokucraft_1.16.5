@@ -41,7 +41,6 @@ public class FlyingBarrierEntity extends Entity implements IEntityAdditionalSpaw
     public void baseTick() {
         super.baseTick();
         this.setPos(position().add(getDeltaMovement()));
-        System.out.println("width: " + width);
     }
 
     public void setPos(Vector3d pos) {
@@ -54,28 +53,10 @@ public class FlyingBarrierEntity extends Entity implements IEntityAdditionalSpaw
 
     }
 
-    @Override
-    protected void readAdditionalSaveData(CompoundNBT p_70037_1_) {
-
-    }
-
-    @Override
-    protected void addAdditionalSaveData(CompoundNBT p_213281_1_) {
-
-    }
-
 
     @Override
     public EntitySize getDimensions(Pose ignored) {
-        double width = 0;
-        double height = 0;
-        for (double x: dimensions.arrayX())
-            width = Math.max(width, Math.abs(x));
-        for (double z: dimensions.arrayZ())
-            width = Math.max(width, Math.abs(z));
-        for (double y: dimensions.arrayY())
-            height = Math.max(height, Math.abs(y));
-        return new EntitySize((float) width, (float) height, false);
+        return new EntitySize((float) dimensions.getAxisAlignedMaxWidth(), (float) dimensions.getAxisAlignedHeight(), false);
     }
 
     @Override
@@ -98,9 +79,10 @@ public class FlyingBarrierEntity extends Entity implements IEntityAdditionalSpaw
         return false;
     }
 
+
+
     @Override
-    public void deserializeNBT(CompoundNBT nbt) {
-        super.deserializeNBT(nbt);
+    protected void readAdditionalSaveData(CompoundNBT nbt) {
         width = nbt.getFloat("width");
         height = nbt.getFloat("height");
         thickness = nbt.getFloat("thickness");
@@ -111,13 +93,11 @@ public class FlyingBarrierEntity extends Entity implements IEntityAdditionalSpaw
     }
 
     @Override
-    public CompoundNBT serializeNBT() {
-        CompoundNBT nbt = super.serializeNBT();
+    protected void addAdditionalSaveData(CompoundNBT nbt) {
         nbt.putFloat("width", width);
         nbt.putFloat("height", height);
         nbt.putFloat("thickness", thickness);
         nbt.put("dimensions_", dimensions.serializeNBT());
-        return nbt;
     }
 
     @Override

@@ -17,9 +17,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.IPacket;
 import net.minecraft.network.PacketBuffer;
-import net.minecraft.network.datasync.DataParameter;
-import net.minecraft.network.datasync.DataSerializers;
-import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.particles.IParticleData;
 import net.minecraft.particles.ParticleTypes;
 import net.minecraft.util.DamageSource;
@@ -38,7 +35,6 @@ import java.lang.reflect.Method;
 
 public class BulletEntity extends DamagingProjectileEntity implements IEntityAdditionalSpawnData {
 
-    public static final DataParameter<CompoundNBT> BULLET_DATA = EntityDataManager.defineId(BulletEntity.class, DataSerializers.COMPOUND_TAG);
 
     public boolean isKairosekiBullet = false;
     public boolean isFireBullet = false;
@@ -47,10 +43,9 @@ public class BulletEntity extends DamagingProjectileEntity implements IEntityAdd
     private float inertia = 0.96f;
     private float damageK = 1;
 
-    public static Method endermanTeleport;
+    private static Method endermanTeleport;
 
-
-    private LivingEntity ownerLivingEntity;
+    private LivingEntity ownerLivingEntityServerOnly;
 
     public BulletEntity(EntityType<? extends DamagingProjectileEntity> t, World world) {
         super(KaizokuEntityTypes.BULLET_PROJECTILE.get(), world);
@@ -84,7 +79,7 @@ public class BulletEntity extends DamagingProjectileEntity implements IEntityAdd
     @Override
     public void setOwner(@Nullable Entity owner) {
         if (owner instanceof LivingEntity) {
-            this.ownerLivingEntity = (LivingEntity) owner;
+            this.ownerLivingEntityServerOnly = (LivingEntity) owner;
         }
         super.setOwner(owner);
     }
@@ -148,7 +143,7 @@ public class BulletEntity extends DamagingProjectileEntity implements IEntityAdd
                 endermanTeleport.setAccessible(true);
             }
             for (int i = 0; i < 64; i++) {
-                boolean res = (Boolean)endermanTeleport.invoke(enderman);
+                boolean res = (Boolean) endermanTeleport.invoke(enderman);
                 if (res) {
                     return;
                 }
@@ -168,7 +163,7 @@ public class BulletEntity extends DamagingProjectileEntity implements IEntityAdd
             return;
         }
         LivingEntity target1 = (LivingEntity) target;
-        if ((ownerLivingEntity != null) && (target1 instanceof KaizokuEntity || target1 instanceof PlayerEntity) && (ownerLivingEntity instanceof KaizokuEntity || ownerLivingEntity instanceof PlayerEntity)) {
+        if ((ownerLivingEntityServerOnly != null) && (target1 instanceof KaizokuEntity || target1 instanceof PlayerEntity) && (ownerLivingEntityServerOnly instanceof KaizokuEntity || ownerLivingEntityServerOnly instanceof PlayerEntity)) {
             IEntityInTeam ownerTeam = (IEntityInTeam) getOwner();
             IEntityInTeam targetTeam = (IEntityInTeam) target1;
             if (ownerTeam.isTeammate(targetTeam)) {
@@ -180,8 +175,8 @@ public class BulletEntity extends DamagingProjectileEntity implements IEntityAdd
             return;
         }
         DamageSource source;
-        if (ownerLivingEntity != null) {
-            source = new IndirectEntityDamageSource("player.bullet", this, ownerLivingEntity);
+        if (ownerLivingEntityServerOnly != null) {
+            source = new IndirectEntityDamageSource("player.bullet", this, ownerLivingEntityServerOnly);
         } else {
             source = new DamageSource("bullet");
         }
@@ -244,8 +239,6 @@ public class BulletEntity extends DamagingProjectileEntity implements IEntityAdd
     }
 
 
-
-
     @Override
     public boolean isInvulnerable() {
         return true;
@@ -277,19 +270,18 @@ public class BulletEntity extends DamagingProjectileEntity implements IEntityAdd
     }
 
     @Override
-    public IPacket<?> getAddEntityPacket() {
-        return NetworkHooks.getEntitySpawningPacket(this);
+    public void addAdditionalSaveData(CompoundNBT nbt) {
+        super.addAdditionalSaveData(nbt);
+        nbt.putBoolean("isFireBullet", isFireBullet);
+        nbt.putBoolean("isKairosekiBullet", isKairosekiBullet);
+        nbt.putInt("knockbackStrength", knockbackStrength);
+        nbt.putFloat("inertia", inertia);
+        nbt.putFloat("damageK", damageK);
     }
 
-
     @Override
-    public boolean canCollideWith(Entity p_241849_1_) {
-        return true;
-    }
-
-    @Override
-    public void deserializeNBT(CompoundNBT nbt) {
-        super.deserializeNBT(nbt);
+    public void readAdditionalSaveData(CompoundNBT nbt) {
+        super.readAdditionalSaveData(nbt);
         this.isFireBullet = nbt.getBoolean("isFireBullet");
         this.isKairosekiBullet = nbt.getBoolean("isKairosekiBullet");
         this.knockbackStrength = nbt.getInt("knockbackStrength");
@@ -298,13 +290,13 @@ public class BulletEntity extends DamagingProjectileEntity implements IEntityAdd
     }
 
     @Override
-    public CompoundNBT serializeNBT() {
-        CompoundNBT nbt = super.serializeNBT();
-        nbt.putBoolean("isFireBullet", isFireBullet);
-        nbt.putBoolean("isKairosekiBullet", isKairosekiBullet);
-        nbt.putInt("knockbackStrength", knockbackStrength);
-        nbt.putFloat("inertia", inertia);
-        nbt.putFloat("damageK", damageK);
-        return nbt;
+    public IPacket<?> getAddEntityPacket() {
+        return NetworkHooks.getEntitySpawningPacket(this);
+    }
+
+
+    @Override
+    public boolean canCollideWith(Entity p_241849_1_) {
+        return true;
     }
 }
