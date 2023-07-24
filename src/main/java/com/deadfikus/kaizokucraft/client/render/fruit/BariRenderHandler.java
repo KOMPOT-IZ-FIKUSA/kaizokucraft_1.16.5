@@ -52,16 +52,18 @@ public class BariRenderHandler {
         if(!isExist) return;
 
         EntityRenderer renderer = Minecraft.getInstance().getEntityRenderDispatcher().getRenderer(event.getPlayer());
-
+        if (renderer == null) return;
         if(renderer instanceof PlayerRenderer){
-            ((IAbstractClientPlayerAccess)event.getPlayer()).setReturnBarrierTexture(true);
+            IAbstractClientPlayerAccess player = (IAbstractClientPlayerAccess)event.getPlayer();
+            player.setReturnBarrierTexture(true);
             PlayerModel model = ((PlayerRenderer) renderer).getModel();
+            if (model == null) return;
             boolean isRight = event.getPlayer().getMainArm() == HandSide.RIGHT;
             ModelRenderer arm =  isRight ? model.rightArm : model.leftArm;
             ModelRenderer sleeve = isRight ? model.rightSleeve : model.leftSleeve;
-
+            if (arm == null || sleeve == null) return;
             ((IPlayerRendererAccess)renderer).renderHand_(event.getPoseStack(), event.getMultiBufferSource(), 0xF00000, event.getPlayer(), arm, sleeve);
-            ((IAbstractClientPlayerAccess)event.getPlayer()).setReturnBarrierTexture(false);
+            player.setReturnBarrierTexture(false);
         }
 
     }

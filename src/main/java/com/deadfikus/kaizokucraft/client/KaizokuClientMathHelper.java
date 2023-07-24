@@ -1,9 +1,9 @@
-package com.deadfikus.kaizokucraft.client.render;
+package com.deadfikus.kaizokucraft.client;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
 import net.minecraft.util.math.vector.Quaternion;
 
-public class KaizokuMathHelper {
+public class KaizokuClientMathHelper {
 
     public static void rotateAndTranslateToAnchor(MatrixStack matrixStack,
                                                   float axisX, float axisY, float axisZ, float rad,

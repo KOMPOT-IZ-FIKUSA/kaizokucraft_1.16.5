@@ -5,6 +5,7 @@ import com.deadfikus.kaizokucraft.core.entity.mob.MarineAdmiralEntity;
 import com.deadfikus.kaizokucraft.core.entity.mob.MarineEntity;
 import com.deadfikus.kaizokucraft.core.entity.mob.PirateEntity;
 import com.deadfikus.kaizokucraft.core.entity.projectile.BulletEntity;
+import com.deadfikus.kaizokucraft.core.entity.projectile.FlyingBarrierEntity;
 import net.minecraft.entity.EntityClassification;
 import net.minecraft.entity.EntityType;
 import net.minecraft.util.ResourceLocation;
@@ -36,6 +37,11 @@ public class KaizokuEntityTypes {
                     () -> EntityType.Builder.of(BulletEntity::new, EntityClassification.MISC)
                             .sized(0.2f, 0.2f)
                             .build(new ResourceLocation(ModMain.MODID, "bullet").toString()));
+
+    public static final RegistryObject<EntityType<FlyingBarrierEntity>> FLYING_BARRIER_WALL = ENTITY_TYPES
+            .register("flying_barrier_wall",
+                    () -> EntityType.Builder.of(FlyingBarrierEntity::new, EntityClassification.MISC)
+                            .build(new ResourceLocation(ModMain.MODID, "flying_barrier_wall").toString()));
 
 
 }

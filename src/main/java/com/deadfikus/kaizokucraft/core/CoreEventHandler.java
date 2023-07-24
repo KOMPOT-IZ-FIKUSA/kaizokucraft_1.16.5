@@ -3,10 +3,12 @@ package com.deadfikus.kaizokucraft.core;
 import com.deadfikus.kaizokucraft.core.ability.bari.BarrierFist;
 import com.deadfikus.kaizokucraft.core.ability.bari.BarrierWall;
 import com.deadfikus.kaizokucraft.core.entity.mob.KaizokuEntity;
+import com.deadfikus.kaizokucraft.core.entity.projectile.FlyingBarrierEntity;
 import com.deadfikus.kaizokucraft.core.network.PacketHandler;
 import com.deadfikus.kaizokucraft.core.network.packet.toclient.COverworldTeamsDataSync;
 import com.deadfikus.kaizokucraft.core.network.packet.toclient.CPlayerDataSync;
 import com.deadfikus.kaizokucraft.core.storage.cap.player.PlayerCap;
+import com.deadfikus.kaizokucraft.core.storage.cap.player.PlayerCapProvider;
 import com.deadfikus.kaizokucraft.core.storage.cap.world.OverworldTeamsCap;
 import com.deadfikus.kaizokucraft.core.storage.cap.world.OverworldTeamsCapProvider;
 import com.deadfikus.kaizokucraft.core.teams.KaizokuTeamSerializable;
@@ -18,6 +20,7 @@ import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.util.math.vector.Vector3f;
+import net.minecraft.world.World;
 import net.minecraftforge.event.ServerChatEvent;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
@@ -44,7 +47,7 @@ public class CoreEventHandler {
                         (ServerPlayerEntity)event.player);
                 playerCap.setUpdated();
             }
-            OverworldTeamsCap overworldTeamsCap = (OverworldTeamsCap) OverworldTeamsCapProvider.getOverworldCap(event.player.getCommandSenderWorld());
+            OverworldTeamsCap overworldTeamsCap = OverworldTeamsCapProvider.getOverworldCap(event.player.getCommandSenderWorld());
             overworldTeamsCap.updateDirtiness();
             if (overworldTeamsCap.getDirtiness() > playerCap.worldDataDirtiness) {
                 playerCap.worldDataDirtiness = overworldTeamsCap.getDirtiness();
@@ -60,6 +63,8 @@ public class CoreEventHandler {
             return;
         PlayerCap playerCap = PlayerCap.get(player);
         playerCap.onPlayerTick(player);
+
+        // test add some abilities
         if(playerCap.abilities.isEmpty()){
             playerCap.addAbility(new BarrierWall());
             playerCap.putAbilityToHotbar(0, 0);
@@ -68,39 +73,18 @@ public class CoreEventHandler {
             playerCap.addAbility(new BarrierFist());
             playerCap.putAbilityToHotbar(1, 1);
         }
-
-
     }
 
     @SubscribeEvent
     public void onPlayerPlacesBlock(BlockEvent.EntityPlaceEvent event) {
         if (event.getEntity() instanceof ServerPlayerEntity) {
-            //World world = event.getEntity().getCommandSenderWorld();
-            //Entity entity = new TestEntity(KaizokuEntityTypes.TEST.get(), world);
-            //event.getWorld().addFreshEntity(entity);
+            World world = event.getEntity().getCommandSenderWorld();
+            PlayerEntity player = (PlayerEntity) event.getEntity();
+            world.addFreshEntity(FlyingBarrierEntity.init(world, player.getEyePosition(0), new Vector3d(0, 0, 0.1f), 2, 2, 2));
         }
     }
 
 
-    public static String string = "";
-
-    @SubscribeEvent
-    public void onPlayerJump(LivingEvent.LivingJumpEvent event) {
-
-    }
-
-    @SubscribeEvent
-    public void onServerChat(ServerChatEvent event) {
-        String msg = event.getMessage();
-        if (msg.startsWith("conf")) {
-            int i = 0;
-            float[] values = new float[3];
-            for (String s : msg.substring(5).split(" ")) {
-                values[i++] = Float.parseFloat(s);
-            }
-            Vector3f vec = new Vector3f(values[0], values[1], values[2]);
-        }
-    }
 
 
     @SubscribeEvent
@@ -112,7 +96,6 @@ public class CoreEventHandler {
             if (team.getMembersCount() == 0) {
                 OverworldTeamsCap cap = OverworldTeamsCapProvider.getOverworldCap(entity.level);
                 cap.removeTeam(team);
-                System.out.println("Removed");
             }
         }
     }

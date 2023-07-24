@@ -17,6 +17,9 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.IPacket;
 import net.minecraft.network.PacketBuffer;
+import net.minecraft.network.datasync.DataParameter;
+import net.minecraft.network.datasync.DataSerializers;
+import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.particles.IParticleData;
 import net.minecraft.particles.ParticleTypes;
 import net.minecraft.util.DamageSource;
@@ -34,6 +37,9 @@ import javax.annotation.Nullable;
 import java.lang.reflect.Method;
 
 public class BulletEntity extends DamagingProjectileEntity implements IEntityAdditionalSpawnData {
+
+    public static final DataParameter<CompoundNBT> BULLET_DATA = EntityDataManager.defineId(BulletEntity.class, DataSerializers.COMPOUND_TAG);
+
     public boolean isKairosekiBullet = false;
     public boolean isFireBullet = false;
     public int knockbackStrength = 0;

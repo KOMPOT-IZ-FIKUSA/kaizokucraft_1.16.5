@@ -8,6 +8,7 @@ import com.deadfikus.kaizokucraft.client.render.mob.MarineAdmiralRenderer;
 import com.deadfikus.kaizokucraft.client.render.mob.MarineRenderer;
 import com.deadfikus.kaizokucraft.client.render.mob.PirateRenderer;
 import com.deadfikus.kaizokucraft.client.render.projectille.BulletRenderer;
+import com.deadfikus.kaizokucraft.client.render.projectille.FlyingBarrierRenderer;
 import com.deadfikus.kaizokucraft.core.KaizokuBlocks;
 import com.deadfikus.kaizokucraft.core.entity.KaizokuEntityTypes;
 import net.minecraft.client.Minecraft;
@@ -60,6 +61,7 @@ public class ClientRegister {
         RenderingRegistry.registerEntityRenderingHandler(KaizokuEntityTypes.MARINE.get(), MarineRenderer::new);
         RenderingRegistry.registerEntityRenderingHandler(KaizokuEntityTypes.MARINE_ADMIRAL.get(), MarineAdmiralRenderer::new);
         RenderingRegistry.registerEntityRenderingHandler(KaizokuEntityTypes.BULLET_PROJECTILE.get(), BulletRenderer::new);
+        RenderingRegistry.registerEntityRenderingHandler(KaizokuEntityTypes.FLYING_BARRIER_WALL.get(), FlyingBarrierRenderer::new);
 
     }
 
