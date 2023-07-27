@@ -93,6 +93,7 @@ public class ClientRegister {
             ModelLoader.addSpecialModel(new ResourceLocation("kaizokucraft:other/cube"));
             ModelLoader.addSpecialModel(new ResourceLocation("kaizokucraft:other/cloak"));
             ModelLoader.addSpecialModel(new ResourceLocation("kaizokucraft:entity/marine_admiral"));
+            ModelLoader.addSpecialModel(new ResourceLocation("kaizokucraft:entity/flying_barrier"));
         }
     }
 }

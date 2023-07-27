@@ -11,11 +11,14 @@
     "DamageSourceMixin",
     "InventoryMixin",
     "MinecraftMixin",
-    "ProjectileMixin"
+    "ProjectileHelperMixin",
+    "ProjectileMixin",
+    "WorldMixin"
   ],
   "client": [
     "AbstractClientPlayerEntityMixin",
     "AbstractGuiMixin",
+    "BakedQuadMixin",
     "BlockModelMixin",
     "MatrixStackMixin",
     "PlayerRendererMixin"

@@ -25,6 +25,7 @@ import net.minecraftforge.event.ServerChatEvent;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
 import net.minecraftforge.event.entity.living.LivingEvent;
+import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.event.world.BlockEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 
@@ -78,11 +79,22 @@ public class CoreEventHandler {
     @SubscribeEvent
     public void onPlayerPlacesBlock(BlockEvent.EntityPlaceEvent event) {
         if (event.getEntity() instanceof ServerPlayerEntity) {
-            World world = event.getEntity().getCommandSenderWorld();
-            PlayerEntity player = (PlayerEntity) event.getEntity();
-            world.addFreshEntity(FlyingBarrierEntity.init(world, player.getEyePosition(0), new Vector3d(0, 0, 0.1f), 2, 2, 2));
         }
     }
+
+    @SubscribeEvent
+    public void onPlayerInteract(PlayerInteractEvent event) {
+    }
+
+    @SubscribeEvent
+    public void onServerChat(ServerChatEvent event) {
+        if (event.getMessage().contains("+")) {
+            World world = event.getPlayer().getCommandSenderWorld();
+            PlayerEntity player = event.getPlayer();
+            world.addFreshEntity(FlyingBarrierEntity.init(world, player.getEyePosition(0), player.getLookAngle().scale(0.01f), 3.5f, 2.5f, 1f));
+        }
+    }
+
 
 
 

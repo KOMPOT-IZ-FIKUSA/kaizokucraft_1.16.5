@@ -6,6 +6,7 @@ import com.deadfikus.kaizokucraft.core.entity.KaizokuEntityTypes;
 import com.deadfikus.kaizokucraft.core.entity.mob.MarineAdmiralEntity;
 import com.deadfikus.kaizokucraft.core.entity.mob.MarineEntity;
 import com.deadfikus.kaizokucraft.core.entity.mob.PirateEntity;
+import com.deadfikus.kaizokucraft.core.entity.projectile.FlyingBarrierEntity;
 import com.deadfikus.kaizokucraft.core.network.PacketHandler;
 import com.deadfikus.kaizokucraft.core.quest.QuestsEventsHandler;
 import com.deadfikus.kaizokucraft.core.storage.cap.CapabilityEventHandler;
