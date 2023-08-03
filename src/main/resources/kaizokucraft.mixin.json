@@ -9,17 +9,13 @@
     "BipedModelMixin",
     "BipedRendererMixin",
     "DamageSourceMixin",
-    "InventoryMixin",
     "MinecraftMixin",
-    "ProjectileHelperMixin",
-    "ProjectileMixin",
-    "WorldMixin"
+    "ProjectileMixin"
   ],
   "client": [
     "AbstractClientPlayerEntityMixin",
     "AbstractGuiMixin",
     "BakedQuadMixin",
-    "BlockModelMixin",
     "MatrixStackMixin",
     "PlayerRendererMixin"
   ],

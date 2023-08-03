@@ -1,7 +1,6 @@
 package com.deadfikus.kaizokucraft.core.entity.projectile;
 
 import com.deadfikus.kaizokucraft.core.entity.KaizokuEntityTypes;
-import com.deadfikus.kaizokucraft.core.impact.ICustomCollider;
 import com.deadfikus.kaizokucraft.core.impact.IImpactObject;
 import com.deadfikus.kaizokucraft.core.impact.group.IKairosekiImpactGroup;
 import com.deadfikus.kaizokucraft.core.math.KaizokuCoreMathHelper;
@@ -20,7 +19,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.common.registry.IEntityAdditionalSpawnData;
 import net.minecraftforge.fml.network.NetworkHooks;
 
-public class FlyingBarrierEntity extends Entity implements IEntityAdditionalSpawnData, IImpactObject, ICustomCollider {
+public class FlyingBarrierEntity extends Entity implements IEntityAdditionalSpawnData, IImpactObject {
 
     public float width = 1, height = 1, thickness = 1;
     private OrientedBoxDimensions customDimensions = OrientedBoxDimensions.cube();
@@ -181,36 +180,4 @@ public class FlyingBarrierEntity extends Entity implements IEntityAdditionalSpaw
         return true;
     }
 
-
-
-    private int colliderIndex = -1;
-    @Override
-    public int getCollidersCount() {
-        return 2;
-    }
-
-    @Override
-    public void setStartIterateColliders() {
-        colliderIndex = 0;
-    }
-    @Override
-    public void setEndIterateColliders() {
-        colliderIndex = -1;
-    }
-
-    @Override
-    public AxisAlignedBB getBoundingBox() {
-        if (colliderIndex == -1) {
-            return super.getBoundingBox();
-        } else if (colliderIndex == 0) {
-            colliderIndex += 1;
-            AxisAlignedBB box = super.getBoundingBox();
-            return new AxisAlignedBB(box.minX, box.minY, box.minZ, box.minX + 0.3, box.minY + 0.3, box.minZ + 0.3);
-        } else if (colliderIndex == 1) {
-            colliderIndex += 1;
-            AxisAlignedBB box = super.getBoundingBox();
-            return new AxisAlignedBB(box.maxX - 0.3, box.maxY - 0.3, box.maxZ - 0.3, box.maxX, box.maxY, box.maxZ);
-        }
-        return super.getBoundingBox();
-    }
 }

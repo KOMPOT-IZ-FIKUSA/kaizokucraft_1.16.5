@@ -1,25 +1,11 @@
 package com.deadfikus.kaizokucraft;
 
 import com.deadfikus.kaizokucraft.client.ClientRegister;
-import com.deadfikus.kaizokucraft.client.KeybindsRegister;
 import com.deadfikus.kaizokucraft.core.CoreRegister;
-import com.deadfikus.kaizokucraft.core.KaizokuBlocks;
-import com.deadfikus.kaizokucraft.core.ability.AbilityEvent;
-import com.deadfikus.kaizokucraft.core.network.ServerReceivedEvent;
-import com.deadfikus.kaizokucraft.core.storage.cap.CapabilityEventHandler;
-import com.deadfikus.kaizokucraft.core.storage.cap.player.IPlayerCap;
-import com.deadfikus.kaizokucraft.core.storage.cap.player.PlayerCap;
-import com.deadfikus.kaizokucraft.core.storage.cap.player.PlayerCapStorage;
-import com.deadfikus.kaizokucraft.core.storage.cap.world.OverworldTeamsCap;
 import com.deadfikus.kaizokucraft.proxy.ClientProxy;
 import com.deadfikus.kaizokucraft.proxy.IProxy;
 import com.deadfikus.kaizokucraft.proxy.ServerProxy;
-import net.minecraft.client.renderer.RenderType;
-import net.minecraft.client.renderer.RenderTypeLookup;
 import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.client.model.obj.OBJLoader;
-import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.common.capabilities.CapabilityManager;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.DistExecutor;
 import net.minecraftforge.fml.common.Mod;

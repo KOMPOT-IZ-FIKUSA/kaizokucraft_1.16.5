@@ -43,9 +43,7 @@ public class CoreEventHandler {
         if (event.player instanceof ServerPlayerEntity) {
             PlayerCap playerCap = PlayerCap.get(event.player);
             if (playerCap.shouldBeUpdated()) {
-                PacketHandler.sendToPlayer(
-                        new CPlayerDataSync(playerCap),
-                        (ServerPlayerEntity)event.player);
+                PacketHandler.sendToPlayer(new CPlayerDataSync(playerCap), (ServerPlayerEntity) event.player);
                 playerCap.setUpdated();
             }
             OverworldTeamsCap overworldTeamsCap = OverworldTeamsCapProvider.getOverworldCap(event.player.getCommandSenderWorld());
@@ -60,17 +58,16 @@ public class CoreEventHandler {
     @SubscribeEvent
     public void onPlayerTick(TickEvent.PlayerTickEvent event) {
         PlayerEntity player = event.player;
-        if (player == null)
-            return;
+        if (player == null) return;
         PlayerCap playerCap = PlayerCap.get(player);
         playerCap.onPlayerTick(player);
 
         // test add some abilities
-        if(playerCap.abilities.isEmpty()){
+        if (playerCap.abilities.isEmpty()) {
             playerCap.addAbility(new BarrierWall());
             playerCap.putAbilityToHotbar(0, 0);
         }
-        if(playerCap.abilities.size() == 1){
+        if (playerCap.abilities.size() == 1) {
             playerCap.addAbility(new BarrierFist());
             playerCap.putAbilityToHotbar(1, 1);
         }
@@ -94,9 +91,6 @@ public class CoreEventHandler {
             world.addFreshEntity(FlyingBarrierEntity.init(world, player.getEyePosition(0), player.getLookAngle().scale(0.01f), 3.5f, 2.5f, 1f));
         }
     }
-
-
-
 
 
     @SubscribeEvent
