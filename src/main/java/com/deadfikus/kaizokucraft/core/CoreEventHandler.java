@@ -2,6 +2,7 @@ package com.deadfikus.kaizokucraft.core;
 
 import com.deadfikus.kaizokucraft.core.ability.bari.BarrierFist;
 import com.deadfikus.kaizokucraft.core.ability.bari.BarrierWall;
+import com.deadfikus.kaizokucraft.core.entity.collision.LivingCollisionEntity;
 import com.deadfikus.kaizokucraft.core.entity.mob.KaizokuEntity;
 import com.deadfikus.kaizokucraft.core.entity.projectile.FlyingBarrierEntity;
 import com.deadfikus.kaizokucraft.core.network.PacketHandler;
@@ -88,7 +89,8 @@ public class CoreEventHandler {
         if (event.getMessage().contains("+")) {
             World world = event.getPlayer().getCommandSenderWorld();
             PlayerEntity player = event.getPlayer();
-            world.addFreshEntity(FlyingBarrierEntity.init(world, player.getEyePosition(0), player.getLookAngle().scale(0.01f), 3.5f, 2.5f, 1f));
+            //world.addFreshEntity(FlyingBarrierEntity.init(world, player.getEyePosition(0), player.getLookAngle().scale(0.01f), 3.5f, 2.5f, 1f));
+            world.addFreshEntity(LivingCollisionEntity.init(world, player.getEyePosition(0)));
         }
     }
 

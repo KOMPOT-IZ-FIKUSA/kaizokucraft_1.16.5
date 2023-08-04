@@ -1,6 +1,7 @@
 package com.deadfikus.kaizokucraft.core.entity;
 
 import com.deadfikus.kaizokucraft.ModMain;
+import com.deadfikus.kaizokucraft.core.entity.collision.LivingCollisionEntity;
 import com.deadfikus.kaizokucraft.core.entity.mob.MarineAdmiralEntity;
 import com.deadfikus.kaizokucraft.core.entity.mob.MarineEntity;
 import com.deadfikus.kaizokucraft.core.entity.mob.PirateEntity;
@@ -42,6 +43,11 @@ public class KaizokuEntityTypes {
             .register("flying_barrier_wall",
                     () -> EntityType.Builder.of(FlyingBarrierEntity::new, EntityClassification.MISC)
                             .build(new ResourceLocation(ModMain.MODID, "flying_barrier_wall").toString()));
+
+    public static final RegistryObject<EntityType<LivingCollisionEntity>> LIVING_COLLISION = ENTITY_TYPES
+            .register("living_collision",
+                    () -> EntityType.Builder.of(LivingCollisionEntity::new, EntityClassification.MISC)
+                            .build(new ResourceLocation(ModMain.MODID, "living_collision").toString()));
 
 
 }
